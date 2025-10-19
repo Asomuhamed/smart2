@@ -1,0 +1,3141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SMART CLASS - Multi-Grade Learning Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            min-height: 100vh;
+            color: #333;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background: rgba(15, 32, 39, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .logo-text h1 {
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .logo-text p {
+            color: #94a3b8;
+            font-size: 0.85rem;
+        }
+
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-info {
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-badge {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            transition: background 0.3s;
+            cursor: pointer;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-logout {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+        }
+
+        .btn-logout:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4);
+        }
+
+        /* Login Form */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .login-box {
+            background: white;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 450px;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .login-header h2 {
+            color: #0f2027;
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .login-header p {
+            color: #64748b;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #334155;
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+
+        .btn-login {
+            width: 100%;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            padding: 14px;
+            margin-top: 1rem;
+        }
+
+        .btn-login:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .error-message {
+            background: #fee2e2;
+            color: #dc2626;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        /* Main Content */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            color: white;
+            margin-bottom: 3rem;
+        }
+
+        .page-header h1 {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .page-header p {
+            font-size: 1.2rem;
+            color: #94a3b8;
+        }
+
+        /* Grade Navigation */
+        .grade-nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .grade-btn {
+            padding: 12px 25px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .grade-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .grade-btn.active {
+            background: #3b82f6;
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .grade-btn.disabled {
+            background: rgba(255, 255, 255, 0.05);
+            color: #94a3b8;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        /* Subject Slider */
+        .subject-slider {
+            width: 100%;
+            overflow-x: auto;
+            margin-bottom: 2rem;
+            padding: 10px 0;
+        }
+
+        .subject-slider::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .subject-slider::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+        }
+
+        .subject-slider::-webkit-scrollbar-thumb {
+            background: #3b82f6;
+            border-radius: 4px;
+        }
+
+        .subject-container {
+            display: flex;
+            gap: 1rem;
+            padding: 0 10px;
+        }
+
+        .subject-card {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+            font-weight: 600;
+            color: #334155;
+        }
+
+        .subject-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .subject-card.active {
+            background: #3b82f6;
+            color: white;
+        }
+
+        /* Page Content */
+        .page-content {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .page-content.active {
+            display: block;
+        }
+
+        /* Admin Controls */
+        .admin-controls {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .admin-controls h3 {
+            color: #0f2027;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-form {
+            display: grid;
+            gap: 1rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .btn-add {
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            padding: 12px;
+            margin-top: 1rem;
+        }
+
+        .btn-add:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        /* Teacher Grid */
+        .teacher-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .teacher-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: slideUp 0.5s;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .teacher-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .teacher-header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            color: white;
+            text-align: center;
+        }
+
+        .teacher-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid white;
+            margin: 0 auto 1rem;
+        }
+
+        .teacher-name {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .teacher-subject {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .teacher-content {
+            padding: 1.5rem;
+        }
+
+        .teacher-videos {
+            margin-top: 1rem;
+        }
+
+        .video-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .video-item:last-child {
+            border-bottom: none;
+        }
+
+        .video-title {
+            font-weight: 600;
+            color: #334155;
+        }
+
+        .video-duration {
+            color: #3b82f6;
+            font-size: 0.9rem;
+        }
+
+        /* Video Grid */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .video-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: slideUp 0.5s;
+        }
+
+        .video-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .video-thumbnail {
+            width: 100%;
+            height: 300px;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .video-thumbnail video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background: #000;
+        }
+
+        .play-icon {
+            font-size: 4rem;
+            color: white;
+            opacity: 0.9;
+            position: absolute;
+        }
+
+        .video-info {
+            padding: 1.5rem;
+        }
+
+        .video-info h3 {
+            color: #0f2027;
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+
+        .video-info p {
+            color: #64748b;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .video-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .video-duration {
+            color: #3b82f6;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .btn-delete {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+        }
+
+        .btn-delete:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.4);
+        }
+
+        /* Profile Section */
+        .profile-container {
+            display: flex;
+            gap: 2rem;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .profile-picture-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .profile-picture {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 5px solid #3b82f6;
+        }
+
+        .profile-info {
+            flex: 1;
+        }
+
+        .profile-info h3 {
+            color: #0f2027;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .info-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .info-label {
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-value {
+            padding: 10px 15px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .password-field {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .password-toggle {
+            background: none;
+            border: none;
+            color: #3b82f6;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        /* User Management */
+        .user-management {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .user-list {
+            margin-top: 2rem;
+        }
+
+        .user-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .user-details {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .user-text h4 {
+            color: #0f2027;
+            margin-bottom: 0.25rem;
+        }
+
+        .user-text p {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: white;
+        }
+
+        .empty-state h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state p {
+            color: #94a3b8;
+            font-size: 1.1rem;
+        }
+
+        /* Success/Error Messages */
+        .message {
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .success-message {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+
+        .error-message {
+            background: #fee2e2;
+            color: #dc2626;
+            border: 1px solid #fecaca;
+        }
+
+        /* Upload Progress */
+        .upload-progress {
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #e2e8f0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+            width: 0%;
+            transition: width 0.3s;
+        }
+
+        /* Video Protection */
+        .video-protection {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .no-download video::-webkit-media-controls {
+            -webkit-justify-content: center;
+            justify-content: center;
+        }
+
+        .no-download video::-webkit-media-controls-enclosure {
+            background: rgba(0,0,0,0.5);
+            border-radius: 5px;
+        }
+
+        /* Grade Selection */
+        .grade-selection {
+            margin-top: 1rem;
+        }
+
+        .grade-checkboxes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 5px;
+        }
+
+        .grade-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .grade-checkbox input {
+            width: auto;
+        }
+
+        .grade-checkbox label {
+            margin-bottom: 0;
+            font-weight: normal;
+        }
+
+        /* Slideshow Styles */
+        .slideshow-container {
+            position: relative;
+            width: 100%;
+            max-width: 1400px;
+            height: 700px;
+            margin: 0 auto 3rem;
+        }
+
+        .slide {
+            display: none;
+            width: 100%;
+            height: 100%;
+            animation: fadeIn 1s;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        .book-cover {
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.7);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 80px;
+        }
+
+        /* Subject-specific gradients */
+        .physics-cover { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
+        .chemistry-cover { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); }
+        .math-cover { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+        .english-cover { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .kurdish-cover { background: linear-gradient(135deg, #c0392b 0%, #e74c3c 50%, #d35400 100%); }
+        .arabic-cover { background: linear-gradient(135deg, #16a085 0%, #1abc9c 50%, #27ae60 100%); }
+        .biology-cover { background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%); }
+
+        /* Animated Background */
+        .background-animation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            z-index: 1;
+        }
+
+        .floating-symbol {
+            position: absolute;
+            font-size: 50px;
+            color: white;
+            animation: float 8s ease-in-out infinite;
+            opacity: 0.4;
+            font-weight: bold;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(10deg); }
+        }
+
+        /* Decorative Circles */
+        .circle-decoration {
+            position: absolute;
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+            animation: rotate 25s linear infinite;
+        }
+
+        .circle1 {
+            width: 350px;
+            height: 350px;
+            top: -100px;
+            right: -100px;
+        }
+
+        .circle2 {
+            width: 250px;
+            height: 250px;
+            bottom: -80px;
+            left: -80px;
+            animation-direction: reverse;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        /* Content */
+        .content {
+            position: relative;
+            z-index: 10;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .header {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .subject-badge {
+            display: inline-block;
+            padding: 10px 30px;
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(15px);
+            color: white;
+            border-radius: 50px;
+            font-size: 13px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: bold;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+            margin-bottom: 25px;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+        }
+
+        .title {
+            font-size: 90px;
+            font-weight: bold;
+            color: white;
+            text-align: center;
+            line-height: 1.1;
+            margin: 30px 0;
+            text-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+            letter-spacing: 5px;
+        }
+
+        .kurdish-title, .arabic-title {
+            direction: rtl;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.95);
+            font-size: 20px;
+            margin-top: 20px;
+            letter-spacing: 2px;
+            text-shadow: 0 3px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Central Icon */
+        .center-icon {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 35px 0;
+        }
+
+        .icon-wrapper {
+            width: 180px;
+            height: 180px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+            animation: iconPulse 3s ease-in-out infinite;
+            border: 3px solid rgba(255, 255, 255, 0.4);
+        }
+
+        @keyframes iconPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .icon-symbol {
+            font-size: 85px;
+            color: white;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Physics Atom */
+        .atom {
+            position: relative;
+            width: 140px;
+            height: 140px;
+        }
+
+        .nucleus {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background: white;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.9);
+        }
+
+        .orbit {
+            position: absolute;
+            border: 2px solid rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .orbit1 {
+            width: 90px;
+            height: 90px;
+            animation: orbitRotate 3s linear infinite;
+        }
+
+        .orbit2 {
+            width: 140px;
+            height: 50px;
+            animation: orbitRotate 4s linear infinite reverse;
+        }
+
+        .orbit3 {
+            width: 50px;
+            height: 140px;
+            animation: orbitRotate 5s linear infinite;
+        }
+
+        @keyframes orbitRotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .electron {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.9);
+        }
+
+        .e1 { top: 0; left: 50%; transform: translateX(-50%); }
+        .e2 { bottom: 0; left: 50%; transform: translateX(-50%); }
+        .e3 { left: 0; top: 50%; transform: translateY(-50%); }
+
+        /* Chemistry Molecule */
+        .molecule {
+            position: relative;
+            width: 140px;
+            height: 140px;
+        }
+
+        .mol-atom {
+            position: absolute;
+            width: 45px;
+            height: 45px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 25px rgba(255, 255, 255, 0.7);
+        }
+
+        .ma1 { top: 0; left: 50%; transform: translateX(-50%); }
+        .ma2 { bottom: 0; left: 0; }
+        .ma3 { bottom: 0; right: 0; }
+
+        .bond {
+            position: absolute;
+            width: 4px;
+            background: rgba(255, 255, 255, 0.7);
+            transform-origin: top center;
+        }
+
+        .bond1 {
+            height: 70px;
+            top: 25px;
+            left: 50%;
+            transform: translateX(-50%) rotate(-45deg);
+        }
+
+        .bond2 {
+            height: 70px;
+            top: 25px;
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
+        }
+
+        /* Biology Cell */
+        .cell {
+            position: relative;
+            width: 140px;
+            height: 140px;
+        }
+
+        .cell-outer {
+            width: 100%;
+            height: 100%;
+            border: 3px solid white;
+            border-radius: 50%;
+            position: relative;
+            animation: cellPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes cellPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .cell-nucleus {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.8);
+        }
+
+        .organelle {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            animation: organelleOrbit 8s linear infinite;
+        }
+
+        @keyframes organelleOrbit {
+            from { transform: rotate(0deg) translateX(50px) rotate(0deg); }
+            to { transform: rotate(360deg) translateX(50px) rotate(-360deg); }
+        }
+
+        /* Ornamental Design for Kurdish/Arabic */
+        .ornamental-design {
+            width: 180px;
+            height: 180px;
+            position: relative;
+            animation: ornamentRotate 20s linear infinite;
+        }
+
+        @keyframes ornamentRotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .ornament-circle {
+            position: absolute;
+            border: 4px solid rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .oc1 { width: 180px; height: 180px; }
+        .oc2 { width: 120px; height: 120px; }
+        .oc3 { width: 65px; height: 65px; }
+
+        .center-symbol {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 50px;
+            color: white;
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: auto;
+        }
+
+        .grade-text {
+            font-size: 20px;
+            color: white;
+            font-weight: 600;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            text-shadow: 0 3px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .school-text {
+            font-size: 16px;
+            color: rgba(255, 255, 255, 0.9);
+            letter-spacing: 1px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .divider {
+            width: 120px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.6);
+            margin: 12px auto;
+            border-radius: 2px;
+        }
+
+        /* Corner decorations */
+        .corner-decoration {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            z-index: 5;
+        }
+
+        .top-left {
+            top: 30px;
+            left: 30px;
+            border-right: none;
+            border-bottom: none;
+            border-radius: 10px 0 0 0;
+        }
+
+        .bottom-right {
+            bottom: 30px;
+            right: 30px;
+            border-left: none;
+            border-top: none;
+            border-radius: 0 0 10px 0;
+        }
+
+        /* Navigation */
+        .nav-controls {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .dot.active {
+            background: white;
+            width: 30px;
+            border-radius: 6px;
+        }
+
+        .slide-counter {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 600;
+            z-index: 100;
+        }
+
+        /* Mobile Menu */
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1200px) {
+            .slideshow-container {
+                max-width: 95%;
+                height: 600px;
+            }
+
+            .title {
+                font-size: 70px;
+            }
+
+            .book-cover {
+                padding: 30px 50px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .slideshow-container {
+                height: 500px;
+            }
+
+            .title {
+                font-size: 60px;
+            }
+
+            .book-cover {
+                padding: 25px 40px;
+            }
+
+            .icon-wrapper {
+                width: 150px;
+                height: 150px;
+            }
+
+            .atom, .molecule, .cell, .ornamental-design {
+                width: 120px;
+                height: 120px;
+            }
+
+            .subtitle {
+                font-size: 18px;
+            }
+
+            .grade-text {
+                font-size: 18px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .video-grid, .teacher-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+                padding: 1rem;
+            }
+
+            .page-header h1 {
+                font-size: 2rem;
+            }
+
+            .page-header p {
+                font-size: 1rem;
+            }
+
+            .profile-container {
+                flex-direction: column;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .grade-nav {
+                flex-wrap: wrap;
+            }
+            
+            .slideshow-container {
+                max-width: 95%;
+                height: 450px;
+            }
+
+            .book-cover {
+                padding: 20px 30px;
+            }
+
+            .title {
+                font-size: 50px;
+                margin: 20px 0;
+            }
+
+            .subtitle {
+                font-size: 16px;
+                margin-top: 15px;
+            }
+
+            .icon-wrapper {
+                width: 120px;
+                height: 120px;
+            }
+
+            .atom, .molecule, .cell, .ornamental-design {
+                width: 100px;
+                height: 100px;
+            }
+
+            .icon-symbol {
+                font-size: 60px;
+            }
+
+            .center-icon {
+                margin: 25px 0;
+            }
+
+            .circle1 {
+                width: 250px;
+                height: 250px;
+                top: -70px;
+                right: -70px;
+            }
+
+            .circle2 {
+                width: 180px;
+                height: 180px;
+                bottom: -60px;
+                left: -60px;
+            }
+
+            .floating-symbol {
+                font-size: 35px;
+            }
+
+            .subject-badge {
+                padding: 8px 20px;
+                font-size: 12px;
+            }
+
+            .grade-text {
+                font-size: 16px;
+            }
+
+            .divider {
+                width: 100px;
+            }
+
+            .slide-counter {
+                top: 20px;
+                right: 20px;
+                padding: 8px 15px;
+                font-size: 12px;
+            }
+
+            .nav-controls {
+                bottom: 20px;
+            }
+
+            .corner-decoration {
+                width: 40px;
+                height: 40px;
+            }
+
+            .top-left {
+                top: 20px;
+                left: 20px;
+            }
+
+            .bottom-right {
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .login-box {
+                padding: 2rem;
+            }
+
+            .login-header h2 {
+                font-size: 1.5rem;
+            }
+
+            .slideshow-container {
+                height: 400px;
+            }
+
+            .book-cover {
+                padding: 15px 20px;
+            }
+
+            .title {
+                font-size: 40px;
+                margin: 15px 0;
+            }
+
+            .subtitle {
+                font-size: 14px;
+                margin-top: 10px;
+            }
+
+            .icon-wrapper {
+                width: 100px;
+                height: 100px;
+            }
+
+            .atom, .molecule, .cell, .ornamental-design {
+                width: 80px;
+                height: 80px;
+            }
+
+            .icon-symbol {
+                font-size: 45px;
+            }
+
+            .nucleus {
+                width: 18px;
+                height: 18px;
+            }
+
+            .orbit1 {
+                width: 60px;
+                height: 60px;
+            }
+
+            .orbit2 {
+                width: 90px;
+                height: 35px;
+            }
+
+            .orbit3 {
+                width: 35px;
+                height: 90px;
+            }
+
+            .electron {
+                width: 7px;
+                height: 7px;
+            }
+
+            .mol-atom {
+                width: 30px;
+                height: 30px;
+            }
+
+            .bond1, .bond2 {
+                height: 50px;
+            }
+
+            .cell-nucleus {
+                width: 35px;
+                height: 35px;
+            }
+
+            .organelle {
+                width: 15px;
+                height: 15px;
+            }
+
+            .ornament-circle.oc1 {
+                width: 150px;
+                height: 150px;
+            }
+
+            .ornament-circle.oc2 {
+                width: 100px;
+                height: 100px;
+            }
+
+            .ornament-circle.oc3 {
+                width: 55px;
+                height: 55px;
+            }
+
+            .center-symbol {
+                font-size: 35px;
+            }
+
+            .subject-badge {
+                padding: 6px 15px;
+                font-size: 11px;
+                margin-bottom: 15px;
+            }
+
+            .grade-text {
+                font-size: 14px;
+            }
+
+            .school-text {
+                font-size: 14px;
+            }
+
+            .divider {
+                width: 80px;
+                margin: 8px auto;
+            }
+
+            .circle1 {
+                width: 200px;
+                height: 200px;
+                top: -50px;
+                right: -50px;
+            }
+
+            .circle2 {
+                width: 150px;
+                height: 150px;
+                bottom: -40px;
+                left: -40px;
+            }
+
+            .floating-symbol {
+                font-size: 25px;
+            }
+
+            .slide-counter {
+                top: 15px;
+                right: 15px;
+                padding: 6px 12px;
+                font-size: 11px;
+            }
+
+            .nav-controls {
+                bottom: 15px;
+            }
+
+            .dot {
+                width: 10px;
+                height: 10px;
+            }
+
+            .dot.active {
+                width: 25px;
+            }
+
+            .corner-decoration {
+                width: 30px;
+                height: 30px;
+            }
+
+            .top-left {
+                top: 15px;
+                left: 15px;
+            }
+
+            .bottom-right {
+                bottom: 15px;
+                right: 15px;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+                position: absolute;
+                top: 1rem;
+                right: 1rem;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                width: 100%;
+                display: none;
+            }
+
+            .nav-links.mobile-open {
+                display: flex;
+            }
+
+            .nav-link {
+                text-align: center;
+                padding: 12px;
+                border-radius: 8px;
+                margin: 5px 0;
+            }
+
+            .user-info {
+                flex-direction: column;
+                gap: 5px;
+                margin: 10px 0;
+            }
+
+            .nav-right {
+                flex-direction: column;
+                gap: 10px;
+                width: 100%;
+            }
+
+            .btn-logout {
+                width: 100%;
+                margin-top: 10px;
+            }
+
+            .subject-card {
+                padding: 12px 20px;
+                font-size: 0.9rem;
+            }
+
+            .grade-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+
+            .admin-controls, .user-management, .profile-container {
+                padding: 1.5rem;
+            }
+
+            .profile-picture {
+                width: 150px;
+                height: 150px;
+            }
+
+            .video-thumbnail {
+                height: 250px;
+            }
+
+            .video-info {
+                padding: 1rem;
+            }
+
+            .video-info h3 {
+                font-size: 1.1rem;
+            }
+
+            .video-info p {
+                font-size: 0.9rem;
+            }
+
+            .video-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .teacher-avatar {
+                width: 70px;
+                height: 70px;
+            }
+
+            .teacher-name {
+                font-size: 1.1rem;
+            }
+
+            .teacher-content {
+                padding: 1rem;
+            }
+
+            .user-card {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+
+            .user-details {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .user-text h4 {
+                font-size: 1rem;
+            }
+
+            .user-text p {
+                font-size: 0.8rem;
+            }
+
+            .grade-checkboxes {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .slideshow-container {
+                height: 350px;
+            }
+
+            .title {
+                font-size: 35px;
+            }
+
+            .subtitle {
+                font-size: 13px;
+            }
+
+            .icon-wrapper {
+                width: 80px;
+                height: 80px;
+            }
+
+            .atom, .molecule, .cell, .ornamental-design {
+                width: 65px;
+                height: 65px;
+            }
+
+            .icon-symbol {
+                font-size: 35px;
+            }
+
+            .book-cover {
+                padding: 10px 15px;
+            }
+
+            .subject-badge {
+                padding: 5px 12px;
+                font-size: 10px;
+            }
+
+            .grade-text {
+                font-size: 13px;
+            }
+
+            .divider {
+                width: 60px;
+            }
+
+            .floating-symbol {
+                font-size: 20px;
+            }
+
+            .circle1 {
+                width: 150px;
+                height: 150px;
+            }
+
+            .circle2 {
+                width: 120px;
+                height: 120px;
+            }
+
+            .login-container {
+                padding: 1rem;
+            }
+
+            .login-box {
+                padding: 1.5rem;
+            }
+
+            .container {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;">
+    <!-- Navigation Bar -->
+    <nav class="navbar" id="navbar" style="display: none;">
+        <div class="logo">
+            <div class="logo-icon">📚</div>
+            <div class="logo-text">
+                <h1>SMART CLASS</h1>
+                <p>Build Your Future</p>
+            </div>
+        </div>
+        <button class="mobile-menu-toggle" id="mobileMenuToggle">☰</button>
+        <div class="nav-right">
+            <div class="nav-links" id="navLinks">
+                <a class="nav-link active" onclick="showPage('home')">Learning Materials</a>
+                <a class="nav-link" onclick="showPage('profile')">Profile</a>
+                <a class="nav-link" id="userManagementLink" style="display: none;" onclick="showPage('userManagement')">User Management</a>
+            </div>
+            <div class="user-info">
+                <span id="welcomeText">Welcome, </span>
+                <span class="user-badge" id="userRole"></span>
+            </div>
+            <button class="btn btn-logout" onclick="logout()">Logout</button>
+        </div>
+    </nav>
+
+    <!-- Login Form -->
+    <div class="login-container" id="loginContainer">
+        <div class="login-box">
+            <div class="login-header">
+                <h2>📚 SMART CLASS</h2>
+                <p>Build Your Future</p>
+            </div>
+            <div class="error-message" id="errorMessage"></div>
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" required placeholder="Enter your username">
+                </div>
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" required placeholder="Enter your password">
+                </div>
+                <button type="submit" class="btn btn-login">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Home Page -->
+    <div class="container" id="homePage" style="display: none;">
+        <div class="page-header">
+            <h1>SMART CLASS</h1>
+            <p id="gradeAccessText">Multi-Grade Learning Platform</p>
+        </div>
+
+        <!-- Textbook Covers Slideshow -->
+        <div class="slideshow-container">
+            <div class="slide-counter" id="slideCounter">1 / 7</div>
+
+            <!-- Slide 1: Physics -->
+            <div class="slide active">
+                <div class="book-cover physics-cover">
+                    <div class="background-animation" id="physicsBg"></div>
+                    <div class="circle-decoration circle1"></div>
+                    <div class="circle-decoration circle2"></div>
+                    <div class="corner-decoration top-left"></div>
+                    <div class="corner-decoration bottom-right"></div>
+
+                    <div class="content">
+                        <div class="header">
+                            <div class="subject-badge">Science</div>
+                            <h1 class="title">PHYSICS</h1>
+                            <p class="subtitle">Understanding the Laws of Nature</p>
+                        </div>
+
+                        <div class="center-icon">
+                            <div class="icon-wrapper">
+                                <div class="atom">
+                                    <div class="nucleus"></div>
+                                    <div class="orbit orbit1"><div class="electron e1"></div></div>
+                                    <div class="orbit orbit2"><div class="electron e2"></div></div>
+                                    <div class="orbit orbit3"><div class="electron e3"></div></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="footer">
+                            <div class="grade-text">12th Grade</div>
+                            <div class="divider"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 2: Chemistry -->
+            <div class="slide">
+                <div class="book-cover chemistry-cover">
+                    <div class="background-animation" id="chemistryBg"></div>
+                    <div class="circle-decoration circle1"></div>
+                    <div class="circle-decoration circle2"></div>
+                    <div class="corner-decoration top-left"></div>
+                    <div class="corner-decoration bottom-right"></div>
+
+                    <div class="content">
+                        <div class="header">
+                            <div class="subject-badge">Science</div>
+                            <h1 class="title">CHEMISTRY</h1>
+                            <p class="subtitle">Exploring Matter and Reactions</p>
+                        </div>
+
+                        <div class="center-icon">
+                            <div class="icon-wrapper">
+                                <div class="molecule">
+                                    <div class="mol-atom ma1"></div>
+                                    <div class="mol-atom ma2"></div>
+                                    <div class="mol-atom ma3"></div>
+                                    <div class="bond bond1"></div>
+                                    <div class="bond bond2"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="footer">
+                            <div class="grade-text">12th Grade</div>
+                            <div class="divider"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 3: Math -->
+            <div class="slide">
+                <div class="book-cover math-cover">
+                    <div class="background-animation" id="mathBg"></div>
+                    <div class="circle-decoration circle1"></div>
+                    <div class="circle-decoration circle2"></div>
+                    <div class="corner-decoration top-left"></div>
+                    <div class="corner-decoration bottom-right"></div>
+
+                    <div class="content">
+                        <div class="header">
+                            <div class="subject-badge">Mathematics</div>
+                            <h1 class="title">MATH</h1>
+                            <p class="subtitle">The Language of the Universe</p>
+                        </div>
+
+                        <div class="center-icon">
+                            <div class="icon-wrapper">
+                                <div class="icon-symbol">π</div>
+                            </div>
+                        </div>
+
+                        <div class="footer">
+                            <div class="grade-text">12th Grade</div>
+                            <div class="divider"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 4: Biology -->
+            <div class="slide">
+                <div class="book-cover biology-cover">
+                    <div class="background-animation" id="biologyBg"></div>
+                    <div class="circle-decoration circle1"></div>
+                    <div class="circle-decoration circle2"></div>
+                    <div class="corner-decoration top-left"></div>
+                    <div class="corner-decoration bottom-right"></div>
+
+                    <div class="content">
+                        <div class="header">
+                            <div class="subject-badge">Science</div>
+                            <h1 class="title">BIOLOGY</h1>
+                            <p class="subtitle">Exploring the Science of Life</p>
+                        </div>
+
+                        <div class="center-icon">
+                            <div class="icon-wrapper">
+                                <div class="cell">
+                                    <div class="cell-outer">
+                                        <div class="cell-nucleus"></div>
+                                        <div class="organelle" style="animation-delay: 0s;"></div>
+                                        <div class="organelle" style="animation-delay: -2s;"></div>
+                                        <div class="organelle" style="animation-delay: -4s;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="footer">
+                            <div class="grade-text">12th Grade</div>
+                            <div class="divider"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 5: English -->
+            <div class="slide">
+                <div class="book-cover english-cover">
+                    <div class="background-animation" id="englishBg"></div>
+                    <div class="circle-decoration circle1"></div>
+                    <div class="circle-decoration circle2"></div>
+                    <div class="corner-decoration top-left"></div>
+                    <div class="corner-decoration bottom-right"></div>
+
+                    <div class="content">
+                        <div class="header">
+                            <div class="subject-badge">Language</div>
+                            <h1 class="title">ENGLISH</h1>
+                            <p class="subtitle">Master Global Communication</p>
+                        </div>
+
+                        <div class="center-icon">
+                            <div class="icon-wrapper">
+                                <div class="icon-symbol">Aa</div>
+                            </div>
+                        </div>
+
+                        <div class="footer">
+                            <div class="grade-text">12th Grade</div>
+                            <div class="divider"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 6: Kurdish -->
+            <div class="slide">
+                <div class="book-cover kurdish-cover">
+                    <div class="background-animation" id="kurdishBg"></div>
+                    <div class="circle-decoration circle1"></div>
+                    <div class="circle-decoration circle2"></div>
+                    <div class="corner-decoration top-left"></div>
+                    <div class="corner-decoration bottom-right"></div>
+
+                    <div class="content">
+                        <div class="header">
+                            <div class="subject-badge">زمان و ئەدەبیات</div>
+                            <h1 class="title kurdish-title">کوردی</h1>
+                            <p class="subtitle">زمانی نەتەوەی کورد</p>
+                        </div>
+
+                        <div class="center-icon">
+                            <div class="ornamental-design">
+                                <div class="ornament-circle oc1"></div>
+                                <div class="ornament-circle oc2"></div>
+                                <div class="ornament-circle oc3"></div>
+                                <div class="center-symbol">✦</div>
+                            </div>
+                        </div>
+
+                        <div class="footer">
+                            <div class="grade-text">پۆلی ١٢</div>
+                            <div class="divider"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Slide 7: Arabic -->
+            <div class="slide">
+                <div class="book-cover arabic-cover">
+                    <div class="background-animation" id="arabicBg"></div>
+                    <div class="circle-decoration circle1"></div>
+                    <div class="circle-decoration circle2"></div>
+                    <div class="corner-decoration top-left"></div>
+                    <div class="corner-decoration bottom-right"></div>
+
+                    <div class="content">
+                        <div class="header">
+                            <div class="subject-badge">اللغة والأدب</div>
+                            <h1 class="title arabic-title">العربية</h1>
+                            <p class="subtitle">لغة القرآن الكريم</p>
+                        </div>
+
+                        <div class="center-icon">
+                            <div class="ornamental-design">
+                                <div class="ornament-circle oc1"></div>
+                                <div class="ornament-circle oc2"></div>
+                                <div class="ornament-circle oc3"></div>
+                                <div class="center-symbol">✦</div>
+                            </div>
+                        </div>
+
+                        <div class="footer">
+                            <div class="grade-text">الصف الثاني عشر</div>
+                            <div class="divider"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Dots -->
+            <div class="nav-controls" id="navDots"></div>
+        </div>
+
+        <!-- Grade Navigation -->
+        <div class="grade-nav" id="gradeNav">
+            <button class="grade-btn active" onclick="changeGrade(9)">9th Grade</button>
+            <button class="grade-btn" onclick="changeGrade(10)">10th Grade</button>
+            <button class="grade-btn" onclick="changeGrade(11)">11th Grade</button>
+            <button class="grade-btn" onclick="changeGrade(12)">12th Grade</button>
+        </div>
+
+        <!-- Subject Slider -->
+        <div class="subject-slider" id="subjectSlider">
+            <div class="subject-container">
+                <div class="subject-card active" onclick="changeSubject('all')">All Subjects</div>
+                <div class="subject-card" onclick="changeSubject('math')">Mathematics</div>
+                <div class="subject-card" onclick="changeSubject('kurdish')">Kurdish</div>
+                <div class="subject-card" onclick="changeSubject('arabic')">Arabic</div>
+                <div class="subject-card" onclick="changeSubject('english')">English</div>
+                <div class="subject-card" onclick="changeSubject('chemistry')">Chemistry</div>
+                <div class="subject-card" onclick="changeSubject('physics')">Physics</div>
+                <div class="subject-card" onclick="changeSubject('biology')">Biology</div>
+            </div>
+        </div>
+
+        <!-- Admin Controls -->
+        <div class="admin-controls" id="adminControls" style="display: none;">
+            <h3>➕ Upload New Content</h3>
+            <form class="admin-form" onsubmit="addVideo(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="videoTitle">Content Title</label>
+                        <input type="text" id="videoTitle" required placeholder="e.g., Cell Division and Mitosis">
+                    </div>
+                    <div class="form-group">
+                        <label for="videoDuration">Duration</label>
+                        <input type="text" id="videoDuration" required placeholder="e.g., 45 min">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="videoSubject">Subject</label>
+                        <select id="videoSubject" required>
+                            <option value="math">Mathematics</option>
+                            <option value="kurdish">Kurdish</option>
+                            <option value="arabic">Arabic</option>
+                            <option value="english">English</option>
+                            <option value="chemistry">Chemistry</option>
+                            <option value="physics">Physics</option>
+                            <option value="biology">Biology</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="videoGrade">Grade</label>
+                        <select id="videoGrade" required>
+                            <option value="9">9th Grade</option>
+                            <option value="10">10th Grade</option>
+                            <option value="11">11th Grade</option>
+                            <option value="12">12th Grade</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="videoTeacher">Teacher</label>
+                        <select id="videoTeacher" required>
+                            <!-- Will be populated by JavaScript -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="videoDescription">Description</label>
+                        <input type="text" id="videoDescription" required placeholder="Brief description of the content">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="videoFile">Video File</label>
+                    <input type="file" id="videoFile" accept="video/*" required>
+                </div>
+                <div class="upload-progress" id="uploadProgress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill"></div>
+                    </div>
+                    <p id="progressText">Uploading: 0%</p>
+                </div>
+                <button type="submit" class="btn btn-add">Upload Content</button>
+            </form>
+        </div>
+
+        <!-- Teacher Grid -->
+        <div class="teacher-grid" id="teacherGrid"></div>
+
+        <!-- Video Grid -->
+        <div class="video-grid" id="videoGrid"></div>
+
+        <!-- Empty State -->
+        <div class="empty-state hidden" id="emptyState">
+            <h3>📚 No Content Yet</h3>
+            <p>Admin can upload content using the form above</p>
+        </div>
+    </div>
+
+    <!-- Profile Page -->
+    <div class="container" id="profilePage" style="display: none;">
+        <div class="page-header">
+            <h1>User Profile</h1>
+            <p>Manage your account information</p>
+        </div>
+        <div class="profile-container">
+            <div class="profile-picture-section">
+                <img id="profilePicture" class="profile-picture" src="https://via.placeholder.com/200" alt="Profile Picture">
+                <input type="file" id="profilePictureInput" accept="image/*" style="display: none;">
+                <button class="btn btn-add" onclick="document.getElementById('profilePictureInput').click()">Change Photo</button>
+            </div>
+            <div class="profile-info">
+                <h3>User Profile</h3>
+                <div class="info-group">
+                    <div class="info-label">Full Name</div>
+                    <div class="info-value" id="profileName"></div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Username</div>
+                    <div class="info-value" id="profileUsername"></div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Role</div>
+                    <div class="info-value" id="profileRole"></div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Allowed Grades</div>
+                    <div class="info-value" id="profileGrades">All Grades</div>
+                </div>
+                <div class="info-group">
+                    <div class="info-label">Password</div>
+                    <div class="info-value password-field">
+                        <span id="profilePassword">••••••••</span>
+                        <button class="password-toggle" onclick="togglePasswordVisibility()">Show</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- User Management Page -->
+    <div class="container" id="userManagementPage" style="display: none;">
+        <div class="page-header">
+            <h1>User Management</h1>
+            <p>Manage system users and permissions</p>
+        </div>
+        <div class="user-management">
+            <h3>👥 User Management</h3>
+            <div class="message success-message" id="userSuccessMessage"></div>
+            <div class="message error-message" id="userErrorMessage"></div>
+            <form class="admin-form" onsubmit="addUser(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="newName">Full Name</label>
+                        <input type="text" id="newName" required placeholder="Enter full name">
+                    </div>
+                    <div class="form-group">
+                        <label for="newUsername">Username</label>
+                        <input type="text" id="newUsername" required placeholder="Enter username">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="newPassword">Password</label>
+                        <input type="password" id="newPassword" required placeholder="Enter password">
+                    </div>
+                    <div class="form-group">
+                        <label for="newRole">Role</label>
+                        <select id="newRole" required onchange="toggleGradeSelection()">
+                            <option value="user">User</option>
+                            <option value="student">Student</option>
+                            <option value="admin">Admin</option>
+                            <option value="teacher">Teacher</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group grade-selection" id="gradeSelection" style="display: none;">
+                    <label>Select Grades This User Can Access:</label>
+                    <div class="grade-checkboxes">
+                        <div class="grade-checkbox">
+                            <input type="checkbox" id="grade9" value="9">
+                            <label for="grade9">9th Grade</label>
+                        </div>
+                        <div class="grade-checkbox">
+                            <input type="checkbox" id="grade10" value="10">
+                            <label for="grade10">10th Grade</label>
+                        </div>
+                        <div class="grade-checkbox">
+                            <input type="checkbox" id="grade11" value="11">
+                            <label for="grade11">11th Grade</label>
+                        </div>
+                        <div class="grade-checkbox">
+                            <input type="checkbox" id="grade12" value="12">
+                            <label for="grade12">12th Grade</label>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-add">Add User</button>
+            </form>
+
+            <div class="user-list">
+                <h3 style="margin-top: 2rem;">All Users</h3>
+                <div id="userList"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // User data stored in memory
+        let users = {
+            admin: { 
+                name: 'System Administrator',
+                password: 'admin123', 
+                role: 'admin', 
+                profilePic: 'https://via.placeholder.com/200',
+                allowedGrades: [9, 10, 11, 12] // Admin can access all grades
+            },
+            user: { 
+                name: 'Regular User',
+                password: 'user123', 
+                role: 'user', 
+                profilePic: 'https://via.placeholder.com/200',
+                allowedGrades: [9, 10] // Regular user can only access 9th and 10th grades
+            },
+            student: { 
+                name: 'Student',
+                password: 'student123', 
+                role: 'student', 
+                profilePic: 'https://via.placeholder.com/200',
+                allowedGrades: [11] // Student can only access 11th grade
+            },
+            teacher1: {
+                name: 'Mr. Ahmed',
+                password: 'teacher123',
+                role: 'teacher',
+                profilePic: 'https://via.placeholder.com/200',
+                subjects: ['math', 'physics'],
+                allowedGrades: [9, 10, 11, 12] // Teacher can access all grades
+            },
+            teacher2: {
+                name: 'Ms. Sara',
+                password: 'teacher123',
+                role: 'teacher',
+                profilePic: 'https://via.placeholder.com/200',
+                subjects: ['biology', 'chemistry'],
+                allowedGrades: [10, 11, 12] // Teacher can access 10th, 11th, and 12th grades
+            },
+            teacher3: {
+                name: 'Mr. Karim',
+                password: 'teacher123',
+                role: 'teacher',
+                profilePic: 'https://via.placeholder.com/200',
+                subjects: ['kurdish', 'arabic'],
+                allowedGrades: [9, 10] // Teacher can access 9th and 10th grades
+            },
+            teacher4: {
+                name: 'Ms. Linda',
+                password: 'teacher123',
+                role: 'teacher',
+                profilePic: 'https://via.placeholder.com/200',
+                subjects: ['english'],
+                allowedGrades: [11, 12] // Teacher can access 11th and 12th grades
+            }
+        };
+
+        let currentUser = null;
+        let videos = [];
+        let db;
+        let currentGrade = 9; // Default to 9th grade
+        let currentSubject = 'all'; // Default to all subjects
+
+        // Slideshow variables
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const slideCounter = document.getElementById('slideCounter');
+        const navDots = document.getElementById('navDots');
+
+        // Disable right-click context menu
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            return false;
+        });
+
+        // Disable keyboard shortcuts for saving
+        document.addEventListener('keydown', function(e) {
+            // Disable F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, Ctrl+S
+            if (
+                e.key === 'F12' || 
+                (e.ctrlKey && e.shiftKey && e.key === 'I') ||
+                (e.ctrlKey && e.shiftKey && e.key === 'J') ||
+                (e.ctrlKey && e.key === 'U') ||
+                (e.ctrlKey && e.key === 's')
+            ) {
+                e.preventDefault();
+                return false;
+            }
+        });
+
+        // Mobile menu toggle
+        document.getElementById('mobileMenuToggle').addEventListener('click', function() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('mobile-open');
+        });
+
+        // Initialize IndexedDB
+        function initDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open('SmartClassDB', 1);
+                
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => {
+                    db = request.result;
+                    resolve(db);
+                };
+                
+                request.onupgradeneeded = (event) => {
+                    const db = event.target.result;
+                    if (!db.objectStoreNames.contains('videos')) {
+                        db.createObjectStore('videos', { keyPath: 'id' });
+                    }
+                    if (!db.objectStoreNames.contains('users')) {
+                        db.createObjectStore('users', { keyPath: 'username' });
+                    }
+                };
+            });
+        }
+
+        // Load data from IndexedDB
+        async function loadDataFromStorage() {
+            try {
+                await initDB();
+                
+                // Load users
+                const usersTransaction = db.transaction(['users'], 'readonly');
+                const usersStore = usersTransaction.objectStore('users');
+                const usersRequest = usersStore.getAll();
+                
+                usersRequest.onsuccess = () => {
+                    if (usersRequest.result.length > 0) {
+                        users = {};
+                        usersRequest.result.forEach(user => {
+                            users[user.username] = user;
+                        });
+                    }
+                };
+                
+                // Load videos
+                const videosTransaction = db.transaction(['videos'], 'readonly');
+                const videosStore = videosTransaction.objectStore('videos');
+                const videosRequest = videosStore.getAll();
+                
+                videosRequest.onsuccess = () => {
+                    videos = videosRequest.result;
+                };
+            } catch (error) {
+                console.error('Error loading data from IndexedDB:', error);
+            }
+        }
+
+        // Save users to IndexedDB
+        function saveUsersToStorage() {
+            if (!db) return;
+            
+            const transaction = db.transaction(['users'], 'readwrite');
+            const store = transaction.objectStore('users');
+            
+            // Clear existing users
+            store.clear();
+            
+            // Add all users
+            for (const [username, userData] of Object.entries(users)) {
+                store.add({
+                    username: username,
+                    ...userData
+                });
+            }
+        }
+
+        // Save video to IndexedDB
+        function saveVideoToStorage(video) {
+            return new Promise((resolve, reject) => {
+                if (!db) {
+                    reject(new Error('Database not initialized'));
+                    return;
+                }
+                
+                const transaction = db.transaction(['videos'], 'readwrite');
+                const store = transaction.objectStore('videos');
+                const request = store.add(video);
+                
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        // Delete video from IndexedDB
+        function deleteVideoFromStorage(id) {
+            return new Promise((resolve, reject) => {
+                if (!db) {
+                    reject(new Error('Database not initialized'));
+                    return;
+                }
+                
+                const transaction = db.transaction(['videos'], 'readwrite');
+                const store = transaction.objectStore('videos');
+                const request = store.delete(id);
+                
+                request.onsuccess = () => resolve(request.result);
+                request.onerror = () => reject(request.error);
+            });
+        }
+
+        // Login handler
+        function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+
+            if (users[username] && users[username].password === password) {
+                currentUser = {
+                    username: username,
+                    name: users[username].name,
+                    role: users[username].role,
+                    profilePic: users[username].profilePic,
+                    allowedGrades: users[username].allowedGrades || [9, 10, 11, 12] // Default to all grades if not specified
+                };
+                
+                document.getElementById('loginContainer').style.display = 'none';
+                document.getElementById('navbar').style.display = 'flex';
+                document.getElementById('homePage').style.display = 'block';
+                
+                document.getElementById('welcomeText').textContent = `Welcome, ${currentUser.name}`;
+                document.getElementById('userRole').textContent = currentUser.role.toUpperCase();
+                
+                if (currentUser.role === 'admin') {
+                    document.getElementById('adminControls').style.display = 'block';
+                    document.getElementById('userManagementLink').style.display = 'block';
+                }
+                
+                // Update grade navigation based on user's allowed grades
+                updateGradeNavigation();
+                renderVideos();
+                populateTeacherDropdown();
+            } else {
+                errorMessage.textContent = 'Invalid username or password';
+                errorMessage.style.display = 'block';
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        // Update grade navigation based on user's allowed grades
+        function updateGradeNavigation() {
+            const gradeNav = document.getElementById('gradeNav');
+            const gradeButtons = gradeNav.querySelectorAll('.grade-btn');
+            const gradeAccessText = document.getElementById('gradeAccessText');
+            
+            // Update the grade access text
+            if (currentUser.allowedGrades.length === 4) {
+                gradeAccessText.textContent = "Multi-Grade Learning Platform";
+            } else {
+                const gradeLabels = currentUser.allowedGrades.map(grade => `${grade}th`).join(', ');
+                gradeAccessText.textContent = `Access to: ${gradeLabels} Grades`;
+            }
+            
+            // Enable/disable grade buttons based on user's allowed grades
+            gradeButtons.forEach(button => {
+                const grade = parseInt(button.textContent);
+                if (currentUser.allowedGrades.includes(grade)) {
+                    button.disabled = false;
+                    button.classList.remove('disabled');
+                } else {
+                    button.disabled = true;
+                    button.classList.add('disabled');
+                }
+            });
+            
+            // Set current grade to the first allowed grade if current grade is not allowed
+            if (!currentUser.allowedGrades.includes(currentGrade)) {
+                currentGrade = currentUser.allowedGrades[0];
+                
+                // Update active grade button
+                gradeButtons.forEach(btn => {
+                    btn.classList.remove('active');
+                    if (parseInt(btn.textContent) === currentGrade) {
+                        btn.classList.add('active');
+                    }
+                });
+            }
+        }
+
+        // Logout handler
+        function logout() {
+            currentUser = null;
+            document.getElementById('loginContainer').style.display = 'flex';
+            document.getElementById('navbar').style.display = 'none';
+            document.getElementById('homePage').style.display = 'none';
+            document.getElementById('profilePage').style.display = 'none';
+            document.getElementById('userManagementPage').style.display = 'none';
+            document.getElementById('adminControls').style.display = 'none';
+            document.getElementById('userManagementLink').style.display = 'none';
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+        }
+
+        // Page navigation
+        function showPage(pageName) {
+            // Hide all pages
+            document.getElementById('homePage').style.display = 'none';
+            document.getElementById('profilePage').style.display = 'none';
+            document.getElementById('userManagementPage').style.display = 'none';
+            
+            // Remove active class from all nav links
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(pageName + 'Page').style.display = 'block';
+            
+            // Add active class to clicked nav link
+            event.target.classList.add('active');
+            
+            // Special handling for user management page
+            if (pageName === 'userManagement' && currentUser.role === 'admin') {
+                renderUserList();
+            }
+            
+            // Special handling for profile page
+            if (pageName === 'profile') {
+                renderProfile();
+            }
+            
+            // Close mobile menu if open
+            document.getElementById('navLinks').classList.remove('mobile-open');
+        }
+
+        // Change grade function
+        function changeGrade(grade) {
+            // Check if user is allowed to access this grade
+            if (!currentUser.allowedGrades.includes(grade)) {
+                alert('You do not have access to this grade level.');
+                return;
+            }
+            
+            currentGrade = grade;
+            
+            // Update active grade button
+            document.querySelectorAll('.grade-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Render videos for the selected grade
+            renderVideos();
+        }
+
+        // Change subject function
+        function changeSubject(subject) {
+            currentSubject = subject;
+            
+            // Update active subject card
+            document.querySelectorAll('.subject-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Render videos for the selected subject
+            renderVideos();
+        }
+
+        // Toggle grade selection visibility based on role
+        function toggleGradeSelection() {
+            const role = document.getElementById('newRole').value;
+            const gradeSelection = document.getElementById('gradeSelection');
+            
+            // Show grade selection for non-admin roles
+            if (role === 'student' || role === 'user' || role === 'teacher') {
+                gradeSelection.style.display = 'block';
+            } else {
+                gradeSelection.style.display = 'none';
+            }
+        }
+
+        // Populate teacher dropdown
+        function populateTeacherDropdown() {
+            const teacherSelect = document.getElementById('videoTeacher');
+            teacherSelect.innerHTML = '';
+            
+            for (const [username, userData] of Object.entries(users)) {
+                if (userData.role === 'teacher') {
+                    const option = document.createElement('option');
+                    option.value = username;
+                    option.textContent = userData.name;
+                    teacherSelect.appendChild(option);
+                }
+            }
+        }
+
+        // Add video (admin only)
+        async function addVideo(event) {
+            event.preventDefault();
+            
+            if (currentUser.role !== 'admin') {
+                alert('Only admins can add videos!');
+                return;
+            }
+
+            const title = document.getElementById('videoTitle').value;
+            const description = document.getElementById('videoDescription').value;
+            const duration = document.getElementById('videoDuration').value;
+            const subject = document.getElementById('videoSubject').value;
+            const grade = document.getElementById('videoGrade').value;
+            const teacher = document.getElementById('videoTeacher').value;
+            const fileInput = document.getElementById('videoFile');
+            const file = fileInput.files[0];
+
+            if (!file) {
+                alert('Please select a video file!');
+                return;
+            }
+
+            // Show upload progress
+            const uploadProgress = document.getElementById('uploadProgress');
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            
+            uploadProgress.style.display = 'block';
+            progressFill.style.width = '0%';
+            progressText.textContent = 'Uploading: 0%';
+
+            try {
+                // Convert video to base64 for storage
+                const videoData = await new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = () => resolve(reader.result);
+                    reader.onerror = error => reject(error);
+                    reader.readAsDataURL(file);
+                });
+
+                // Simulate upload progress
+                for (let i = 0; i <= 100; i += 10) {
+                    await new Promise(resolve => setTimeout(resolve, 50));
+                    progressFill.style.width = `${i}%`;
+                    progressText.textContent = `Uploading: ${i}%`;
+                }
+
+                const newVideo = {
+                    id: Date.now(),
+                    title: title,
+                    description: description,
+                    duration: duration,
+                    subject: subject,
+                    grade: grade,
+                    teacher: teacher,
+                    teacherName: users[teacher].name,
+                    videoData: videoData,
+                    fileName: file.name,
+                    fileType: file.type,
+                    fileSize: (file.size / (1024 * 1024)).toFixed(2) + ' MB'
+                };
+
+                // Save to IndexedDB
+                await saveVideoToStorage(newVideo);
+                videos.push(newVideo);
+                renderVideos();
+
+                // Reset form
+                document.getElementById('videoTitle').value = '';
+                document.getElementById('videoDescription').value = '';
+                document.getElementById('videoDuration').value = '';
+                document.getElementById('videoFile').value = '';
+                uploadProgress.style.display = 'none';
+                
+                // Show success message
+                alert('Content uploaded successfully!');
+            } catch (error) {
+                console.error('Error uploading video:', error);
+                alert('Error uploading video. Please try again with a smaller file.');
+                uploadProgress.style.display = 'none';
+            }
+        }
+
+        // Delete video (admin only)
+        async function deleteVideo(id) {
+            if (currentUser.role !== 'admin') {
+                alert('Only admins can delete videos!');
+                return;
+            }
+
+            if (confirm('Are you sure you want to delete this content?')) {
+                try {
+                    await deleteVideoFromStorage(id);
+                    videos = videos.filter(v => v.id !== id);
+                    renderVideos();
+                } catch (error) {
+                    console.error('Error deleting video:', error);
+                    alert('Error deleting video. Please try again.');
+                }
+            }
+        }
+
+        // Render videos
+        function renderVideos() {
+            const teacherGrid = document.getElementById('teacherGrid');
+            const videoGrid = document.getElementById('videoGrid');
+            const emptyState = document.getElementById('emptyState');
+
+            // Filter videos by current grade and subject
+            let filteredVideos = videos.filter(video => video.grade == currentGrade);
+            
+            if (currentSubject !== 'all') {
+                filteredVideos = filteredVideos.filter(video => video.subject === currentSubject);
+            }
+
+            if (filteredVideos.length === 0) {
+                teacherGrid.innerHTML = '';
+                videoGrid.innerHTML = '';
+                emptyState.classList.remove('hidden');
+                return;
+            }
+
+            emptyState.classList.add('hidden');
+            
+            // Group videos by teacher
+            const teacherVideos = {};
+            filteredVideos.forEach(video => {
+                if (!teacherVideos[video.teacher]) {
+                    teacherVideos[video.teacher] = [];
+                }
+                teacherVideos[video.teacher].push(video);
+            });
+
+            // Render teacher cards
+            teacherGrid.innerHTML = '';
+            for (const [teacherUsername, teacherVideoList] of Object.entries(teacherVideos)) {
+                const teacher = users[teacherUsername];
+                const teacherCard = document.createElement('div');
+                teacherCard.className = 'teacher-card';
+                
+                teacherCard.innerHTML = `
+                    <div class="teacher-header">
+                        <img src="${teacher.profilePic}" alt="${teacher.name}" class="teacher-avatar">
+                        <div class="teacher-name">${teacher.name}</div>
+                        <div class="teacher-subject">${teacher.subjects ? teacher.subjects.map(s => s.charAt(0).toUpperCase() + s.slice(1)).join(', ') : 'Teacher'}</div>
+                    </div>
+                    <div class="teacher-content">
+                        <h3>Teaching Materials</h3>
+                        <div class="teacher-videos">
+                            ${teacherVideoList.map(video => `
+                                <div class="video-item">
+                                    <div class="video-title">${video.title}</div>
+                                    <div class="video-duration">${video.duration}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+                
+                teacherGrid.appendChild(teacherCard);
+            }
+
+            // Render all videos in grid view
+            videoGrid.innerHTML = filteredVideos.map(video => `
+                <div class="video-card no-download">
+                    <div class="video-thumbnail">
+                        <video controls controlsList="nodownload noremoteplayback" disablePictureInPicture oncontextmenu="return false;">
+                            <source src="${video.videoData}" type="${video.fileType}">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="play-icon">▶️</div>
+                        <div class="video-protection"></div>
+                    </div>
+                    <div class="video-info">
+                        <h3>${video.title}</h3>
+                        <p>${video.description}</p>
+                        <div class="video-meta">
+                            <span class="video-duration">⏱️ ${video.duration} | ${video.subject.charAt(0).toUpperCase() + video.subject.slice(1)} | ${video.fileSize} | ${video.teacherName}</span>
+                            ${currentUser.role === 'admin' ? `<button class="btn btn-delete" onclick="deleteVideo(${video.id})">Delete</button>` : ''}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            // Add event listeners to disable right-click on videos
+            document.querySelectorAll('video').forEach(video => {
+                video.addEventListener('contextmenu', function(e) {
+                    e.preventDefault();
+                    return false;
+                });
+            });
+        }
+
+        // Render profile
+        function renderProfile() {
+            document.getElementById('profileName').textContent = currentUser.name;
+            document.getElementById('profileUsername').textContent = currentUser.username;
+            document.getElementById('profileRole').textContent = currentUser.role;
+            document.getElementById('profilePicture').src = currentUser.profilePic;
+            
+            // Display allowed grades in profile
+            const profileGrades = document.getElementById('profileGrades');
+            if (currentUser.allowedGrades.length === 4) {
+                profileGrades.textContent = 'All Grades (9, 10, 11, 12)';
+            } else {
+                const gradeLabels = currentUser.allowedGrades.map(grade => `${grade}th`).join(', ');
+                profileGrades.textContent = gradeLabels;
+            }
+            
+            // Setup profile picture change
+            document.getElementById('profilePictureInput').addEventListener('change', function(event) {
+                const file = event.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        currentUser.profilePic = e.target.result;
+                        users[currentUser.username].profilePic = e.target.result;
+                        document.getElementById('profilePicture').src = e.target.result;
+                        saveUsersToStorage();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        // Toggle password visibility in profile
+        function togglePasswordVisibility() {
+            const passwordSpan = document.getElementById('profilePassword');
+            const toggleButton = document.querySelector('.password-toggle');
+            
+            if (passwordSpan.textContent === '••••••••') {
+                passwordSpan.textContent = users[currentUser.username].password;
+                toggleButton.textContent = 'Hide';
+            } else {
+                passwordSpan.textContent = '••••••••';
+                toggleButton.textContent = 'Show';
+            }
+        }
+
+        // Add user (admin only)
+        function addUser(event) {
+            event.preventDefault();
+            
+            if (currentUser.role !== 'admin') {
+                alert('Only admins can add users!');
+                return;
+            }
+
+            const name = document.getElementById('newName').value;
+            const username = document.getElementById('newUsername').value;
+            const password = document.getElementById('newPassword').value;
+            const role = document.getElementById('newRole').value;
+
+            const successMessage = document.getElementById('userSuccessMessage');
+            const errorMessage = document.getElementById('userErrorMessage');
+
+            // Check if username already exists
+            if (users[username]) {
+                errorMessage.textContent = 'Username already exists! Please choose a different username.';
+                errorMessage.style.display = 'block';
+                successMessage.style.display = 'none';
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 5000);
+                return;
+            }
+
+            // Check if name already exists
+            const nameExists = Object.values(users).some(user => user.name === name);
+            if (nameExists) {
+                errorMessage.textContent = 'Name already exists! Please choose a different name.';
+                errorMessage.style.display = 'block';
+                successMessage.style.display = 'none';
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 5000);
+                return;
+            }
+
+            // Get selected grades
+            let allowedGrades = [9, 10, 11, 12]; // Default to all grades for admin
+            if (role !== 'admin') {
+                allowedGrades = [];
+                const gradeCheckboxes = document.querySelectorAll('.grade-checkbox input:checked');
+                gradeCheckboxes.forEach(checkbox => {
+                    allowedGrades.push(parseInt(checkbox.value));
+                });
+                
+                // If no grades selected, default to all grades
+                if (allowedGrades.length === 0) {
+                    allowedGrades = [9, 10, 11, 12];
+                }
+            }
+
+            users[username] = {
+                name: name,
+                password: password,
+                role: role,
+                profilePic: 'https://via.placeholder.com/200',
+                allowedGrades: allowedGrades
+            };
+
+            saveUsersToStorage();
+
+            successMessage.textContent = `User "${name}" has been successfully added!`;
+            successMessage.style.display = 'block';
+            errorMessage.style.display = 'none';
+            setTimeout(() => {
+                successMessage.style.display = 'none';
+            }, 5000);
+
+            renderUserList();
+            populateTeacherDropdown();
+
+            // Reset form
+            document.getElementById('newName').value = '';
+            document.getElementById('newUsername').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('newRole').value = 'user';
+            document.getElementById('gradeSelection').style.display = 'none';
+            
+            // Uncheck all grade checkboxes
+            document.querySelectorAll('.grade-checkbox input').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+        }
+
+        // Delete user (admin only)
+        function deleteUser(username) {
+            if (currentUser.role !== 'admin') {
+                alert('Only admins can delete users!');
+                return;
+            }
+
+            if (username === 'admin') {
+                alert('Cannot delete the main admin account!');
+                return;
+            }
+
+            if (confirm(`Are you sure you want to delete user "${users[username].name}"?`)) {
+                delete users[username];
+                saveUsersToStorage();
+                renderUserList();
+                populateTeacherDropdown();
+            }
+        }
+
+        // Render user list for admin
+        function renderUserList() {
+            if (currentUser.role !== 'admin') return;
+            
+            const userList = document.getElementById('userList');
+            userList.innerHTML = '';
+            
+            for (const [username, userData] of Object.entries(users)) {
+                const userCard = document.createElement('div');
+                userCard.className = 'user-card';
+                
+                // Format allowed grades for display
+                let gradesText = 'All Grades';
+                if (userData.allowedGrades && userData.allowedGrades.length < 4) {
+                    const gradeLabels = userData.allowedGrades.map(grade => `${grade}th`).join(', ');
+                    gradesText = `Grades: ${gradeLabels}`;
+                }
+                
+                userCard.innerHTML = `
+                    <div class="user-details">
+                        <img src="${userData.profilePic}" alt="${userData.name}" class="user-avatar">
+                        <div class="user-text">
+                            <h4>${userData.name} (${username})</h4>
+                            <p>Role: ${userData.role} | Password: ${userData.password} | ${gradesText}</p>
+                        </div>
+                    </div>
+                    ${username !== 'admin' ? `<button class="btn btn-delete" onclick="deleteUser('${username}')">Delete</button>` : ''}
+                `;
+                userList.appendChild(userCard);
+            }
+        }
+
+        // Slideshow functions
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            document.querySelectorAll('.dot').forEach(dot => dot.classList.remove('active'));
+            
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            document.querySelectorAll('.dot')[currentSlide].classList.add('active');
+            slideCounter.textContent = `${currentSlide + 1} / ${totalSlides}`;
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function goToSlide(n) {
+            showSlide(n);
+        }
+
+        // Create floating symbols for all subjects
+        const subjects = [
+            { id: 'physicsBg', symbols: ['E=mc²', 'F=ma', 'v', 'a', 'ℏ', '∆', 'λ', 'Ω'] },
+            { id: 'chemistryBg', symbols: ['H₂O', 'CO₂', 'O₂', 'NaCl', 'C', 'N', 'H', 'O'] },
+            { id: 'mathBg', symbols: ['∫', '∑', '√', 'π', '∞', '≈', '≠', '÷', '×', '+'] },
+            { id: 'biologyBg', symbols: ['DNA', 'RNA', 'ATP', '🧬', 'H₂O', 'O₂', 'CO₂', 'N'] },
+            { id: 'englishBg', symbols: ['A', 'B', 'C', 'abc', 'XYZ', '?', '!', '&'] },
+            { id: 'kurdishBg', symbols: ['ک', 'و', 'ر', 'د', 'ی', 'ئ', 'ە', 'ێ', 'ھ', 'ل'] },
+            { id: 'arabicBg', symbols: ['ع', 'ر', 'ب', 'ي', 'ة', 'ل', 'غ', 'ت', 'ق', 'م'] }
+        ];
+
+        function createFloatingSymbols() {
+            subjects.forEach(subject => {
+                const bg = document.getElementById(subject.id);
+                if (bg) {
+                    for (let i = 0; i < 12; i++) {
+                        const symbol = document.createElement('div');
+                        symbol.className = 'floating-symbol';
+                        symbol.textContent = subject.symbols[Math.floor(Math.random() * subject.symbols.length)];
+                        symbol.style.left = `${Math.random() * 90}%`;
+                        symbol.style.top = `${Math.random() * 90}%`;
+                        symbol.style.animationDelay = `${Math.random() * 4}s`;
+                        symbol.style.fontSize = `${35 + Math.random() * 35}px`;
+                        bg.appendChild(symbol);
+                    }
+                }
+            });
+        }
+
+        // Initialize the application
+        async function init() {
+            await loadDataFromStorage();
+            
+            // Initialize slideshow
+            for (let i = 0; i < totalSlides; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'dot';
+                if (i === 0) dot.classList.add('active');
+                dot.addEventListener('click', () => goToSlide(i));
+                navDots.appendChild(dot);
+            }
+            
+            // Create floating symbols
+            createFloatingSymbols();
+            
+            // Auto advance every 5 seconds
+            setInterval(nextSlide, 5000);
+        }
+
+        // Initialize when page loads
+        window.onload = init;
+    </script>
+</body>
+</html>
